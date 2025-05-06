@@ -100,36 +100,6 @@ jobs:
           package: ./webview/package.json
           access: public
           tag: ${{ env.REF == 'release' && 'latest' || env.REF }}
-  worker:
-    name: Publish worker
-    runs-on: ubuntu-latest
-    if: "contains(github.event.head_commit.message, 'Bump version')"
-    needs: test
-    defaults:
-      run:
-        working-directory: ./worker
-    steps:
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 18.x
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          persist-credentials: false
-      - name: Check package version
-        id: pkgver
-        run: |
-          echo "::set-output name=local::$(node -p -e "require('./package.json').version")"
-          echo "::set-output name=remote::$(yarn info -s $(node -p -e "require('./package.json').name") version)"
-      - name: Publish package
-        if: ${{ steps.pkgver.outputs.local != steps.pkgver.outputs.remote }}
-        uses: JS-DevTools/npm-publish@v1
-        with:
-          token: ${{ secrets.NPM_AUTH_TOKEN }}
-          package: ./worker/package.json
-          access: public
-          tag: ${{ env.REF == 'release' && 'latest' || env.REF }}
   natives:
     name: Publish natives
     runs-on: ubuntu-latest
