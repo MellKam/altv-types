@@ -1993,9 +1993,13 @@ declare module "alt-server" {
      * Gets or sets the vehicles rotation with a quaternion.
      */
     public quaternion: shared.Quaternion;
+    /**
+     * Indicates whether the object is static, meaning it has no network owner and server retains full control over the entity's state.
+     */
+    public isStaticEntity: boolean;
 
-    constructor(model: string | number, x: number, y: number, z: number, rx: number, ry: number, rz: number, streamingDistance?: number);
-    constructor(model: string | number, pos: shared.IVector3, rot: shared.IVector3, streamingDistance?: number);
+    constructor(model: string | number, x: number, y: number, z: number, rx: number, ry: number, rz: number, streamingDistance?: number, isStaticEntity?: boolean);
+    constructor(model: string | number, pos: shared.IVector3, rot: shared.IVector3, streamingDistance?: number, isStaticEntity?: boolean);
     /**
      * Retrieves the vehicle from the pool.
      *
@@ -3456,7 +3460,7 @@ declare module "alt-server" {
   export function setMigrationDistance(count: number): void;
 
   export class Ped extends Entity {
-    constructor(model: string | number, position: shared.IVector3, rotation: shared.IVector3, streamingDistance?: number);
+    constructor(model: string | number, position: shared.IVector3, rotation: shared.IVector3, streamingDistance?: number, isStaticEntity?: boolean);
 
     /**
      * Retrieves the ped from the pool.
@@ -3472,10 +3476,19 @@ declare module "alt-server" {
     public health: number;
     public maxHealth: number;
     public armour: number;
+    /**
+     * Indicates whether the object is static, meaning it has no network owner and server retains full control over the entity's state.
+     */
+    public isStaticEntity: boolean;
   }
 
   export class Object extends Entity {
-    constructor(model: string | number, position: shared.IVector3, rotation: shared.IVector3, alpha?: number, textureVariation?: number, lodDistance?: number, streamingDistance?: number);
+    constructor(model: string | number, position: shared.IVector3, rotation: shared.IVector3, alpha?: number, textureVariation?: number, lodDistance?: number, streamingDistance?: number, isStaticEntity?: boolean);
+
+    /**
+     * Indicates whether the object is static, meaning it has no network owner and server retains full control over the entity's state.
+     */
+    public isStaticEntity: boolean;
 
     public static readonly all: readonly Object[];
 
